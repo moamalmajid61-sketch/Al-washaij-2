@@ -2,96 +2,47 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>منظومة الوشائج المطورة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>?????? ??????? ????????</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #1a1a1a; color: white; text-align: center; padding: 20px; }
-        .container { max-width: 800px; margin: auto; border: 2px solid #d4af37; padding: 20px; border-radius: 20px; background: #262626; }
+        :root { --gold: #d4af37; --bg: #1a1a1a; --card: #262626; --text: #ffffff; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--bg); color: var(--text); text-align: center; padding: 10px; margin: 0; }
+        .container { max-width: 900px; margin: auto; border: 2px solid var(--gold); padding: 15px; border-radius: 20px; background: var(--card); }
+        h1, h2, h3 { color: var(--gold); }
+        input, button { padding: 12px; margin: 5px; border-radius: 8px; border: 1px solid #444; font-size: 15px; }
+        input { width: 70%; background: #333; color: white; }
+        button { background-color: var(--gold); color: black; font-weight: bold; cursor: pointer; border: none; }
+        button:hover { background-color: white; }
         
-        input, button { padding: 12px; margin: 5px; border-radius: 8px; border: none; font-size: 16px; }
-        input { width: 60%; }
-        button { background-color: #d4af37; color: black; font-weight: bold; cursor: pointer; }
-        button:hover { background-color: #fff; }
+        .section { margin-top: 25px; padding: 15px; border: 1px solid #444; border-radius: 15px; background: #2a2a2a; }
+        .pyramid-box { border: 2px solid var(--gold); margin: 10px auto; padding: 15px; width: 80%; border-radius: 10px; background: rgba(212, 175, 55, 0.05); }
+        
+        /* ???? ?????? */
+        .task-item { text-align: right; background: #333; padding: 10px; margin: 8px 0; border-radius: 8px; border-right: 4px solid var(--gold); display: flex; justify-content: space-between; align-items: center; }
+        .completed { text-decoration: line-through; opacity: 0.5; border-right-color: #555; }
+        .task-meta { font-size: 12px; color: var(--gold); display: block; margin-top: 5px; }
+        .check-btn { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 4px 8px; font-size: 12px; }
 
-        .section { margin-top: 30px; padding: 20px; border: 1px solid #444; border-radius: 15px; }
-        
-        /* تصميم الهرم */
-        .pyramid { display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
-        .level { border: 2px solid #d4af37; margin: 5px; padding: 15px; width: fit-content; min-width: 150px; border-radius: 10px; background: rgba(212, 175, 55, 0.1); }
-        
-        .user-card { background: #333; padding: 20px; border-radius: 15px; border-right: 10px solid #d4af37; display: none; margin-top: 20px; }
-        .task-list { text-align: right; display: inline-block; }
+        .list-container { list-style: none; padding: 0; }
+        .members-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .member-tag { background: var(--gold); color: black; padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🏛️ منظومة الوشائج</h1>
+    <h1>??? ?????? ???????</h1>
 
     <div class="section">
-        <h3>تسجيل بيانات العضو</h3>
-        <input type="text" id="userName" placeholder="اكتب اسمك هنا...">
-        <br>
-        <input type="number" id="userMoney" placeholder="المبلغ...">
-        <br>
-        <button onclick="showMyPyramid()">عرض هرمي الخاص</button>
+        <h3>?? ????? ?????? ????? ????? ?????</h3>
+        <p>????? ????? ???? ????? ???? ????? ???????</p>
+        <input type="text" id="userNameInput" placeholder="???? ???? ???...">
+        <button onclick="accessSystem()">???? / ??? ?????</button>
     </div>
 
-    <div id="personalSection" class="user-card">
-        <h2>👤 الهرم الخاص</h2>
-        <h3 id="displayName"></h3>
-        <p>المبلغ المخصص: <span id="displayMoney" style="color: #d4af37; font-size: 24px;"></span> دينار</p>
-    </div>
-
-    <div class="section">
-        <h2>🌐 هرم العلاقات العامة</h2>
-        <p>أدخل الأسماء لبناء الهرم الجماعي:</p>
-        <input type="text" id="groupName" placeholder="اسم الشخص لإضافته للهرم...">
-        <button onclick="addToGroup()">إضافة للهرم</button>
-        
-        <div class="pyramid" id="groupPyramid">
-            </div>
-    </div>
-
-    <div class="section">
-        <h3>📌 مهام ثابتة</h3>
-        <div class="task-list">
-            <p>1. تحديث المبالغ عند كل تسليم.</p>
-            <p>2. مراجعة هرم العلاقات العامة دورياً.</p>
-            <p>3. الالتزام بالسرية التامة للمنظومة.</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    // وظيفة عرض الهرم الخاص
-    function showMyPyramid() {
-        const name = document.getElementById('userName').value;
-        const money = document.getElementById('userMoney').value;
-
-        if (name && money) {
-            document.getElementById('personalSection').style.display = 'block';
-            document.getElementById('displayName').innerText = "العضو: " + name;
-            document.getElementById('displayMoney').innerText = Number(money).toLocaleString();
-        } else {
-            alert("يرجى إدخال الاسم والمبلغ");
-        }
-    }
-
-    // وظيفة إضافة أشخاص لهرم العلاقات العامة
-    function addToGroup() {
-        const name = document.getElementById('groupName').value;
-        if (name) {
-            const pyramid = document.getElementById('groupPyramid');
-            const newLevel = document.createElement('div');
-            newLevel.className = 'level';
-            newLevel.innerText = name;
-            
-            // إضافة الاسم في أعلى الهرم (أو أسفله حسب الرغبة)
-            pyramid.prepend(newLevel);
-            document.getElementById('groupName').value = ""; // تفريغ الحقل
-        }
-    }
-</script>
-
-</body>
-</html>
+    <div id="personalSection" class="section" style="display:none;">
+        <h2>?? ???? ?????: <span id="currentUserName" style="color:white;"></span></h2>
+        <div class="pyramid-box">
+            <input type="number" id="memberAmount" placeholder="???? ???? ??????? ???????...">
+            <button onclick="addAmountToPersonal()">????? ???????</button>
+            <div id="personalList" style="margin
